@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Chirp;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -14,16 +15,15 @@ class ChirpController extends Controller
      */
     public function index(): Response
     {
-        return 'Hello, World!';
         return Inertia::render('Chirps/Index', [
-
+            //
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response
+    public function create()
     {
         //
     }
@@ -33,13 +33,19 @@ class ChirpController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        //
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
+ 
+        $request->user()->chirps()->create($validated);
+ 
+        return redirect(route('chirps.index'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Chirp $chirp): Response
+    public function show(Chirp $chirp)
     {
         //
     }
@@ -47,7 +53,7 @@ class ChirpController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Chirp $chirp): Response
+    public function edit(Chirp $chirp)
     {
         //
     }
@@ -55,7 +61,7 @@ class ChirpController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Chirp $chirp): RedirectResponse
+    public function update(Request $request, Chirp $chirp)
     {
         //
     }
@@ -63,7 +69,7 @@ class ChirpController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Chirp $chirp): RedirectResponse
+    public function destroy(Chirp $chirp)
     {
         //
     }
